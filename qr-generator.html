@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar QR - Capacitación Seguridad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #0066CC;
+            text-align: center;
+        }
+        .input-group {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background: #0066CC;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #0052A3;
+        }
+        #qrcode {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        .instructions {
+            background: #e6f2ff;
+            padding: 15px;
+            border-left: 4px solid #0066CC;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #0066CC;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 Generador de Código QR</h1>
+        
+        <div class="instructions">
+            <h3>📋 Instrucciones:</h3>
+            <ol>
+                <li>Ingresa la URL de tu aplicación de GitHub Pages</li>
+                <li>Haz clic en "Generar QR"</li>
+                <li>Descarga o imprime el código QR</li>
+                <li>Coloca el QR en el área de capacitación</li>
+            </ol>
+        </div>
+
+        <div class="input-group">
+            <label for="url">URL de la Aplicación:</label>
+            <input type="text" id="url" 
+                   placeholder="https://tu-usuario.github.io/capacitacion-seguridad/"
+                   value="https://">
+        </div>
+
+        <button onclick="generateQR()">📱 Generar Código QR</button>
+
+        <div id="qrcode"></div>
+
+        <div id="downloadSection" style="display: none;">
+            <button onclick="downloadQR()">💾 Descargar QR</button>
+            <button onclick="printQR()">🖨️ Imprimir QR</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script>
+        let qrcode = null;
+
+        function generateQR() {
+            const url = document.getElementById('url').value.trim();
+            
+            if (!url || url === 'https://') {
+                alert('⚠️ Por favor, ingresa una URL válida');
+                return;
+            }
+
+            // Limpiar QR anterior
+            document.getElementById('qrcode').innerHTML = '';
+            
+            // Generar nuevo QR
+            qrcode = new QRCode(document.getElementById('qrcode'), {
+                text: url,
+                width: 300,
+                height: 300,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Mostrar botones de descarga
+            document.getElementById('downloadSection').style.display = 'block';
+
+            // Agregar título al QR
+            setTimeout(() => {
+                const container = document.getElementById('qrcode');
+                const title = document.createElement('h2');
+                title.textContent = 'Capacitación en Seguridad';
+                title.style.color = '#00A651';
+                title.style.marginBottom = '10px';
+                container.insertBefore(title, container.firstChild);
+
+                const subtitle = document.createElement('p');
+                subtitle.textContent = 'Escanea para acceder a la capacitación';
+                subtitle.style.color = '#666';
+                subtitle.style.marginTop = '10px';
+                container.appendChild(subtitle);
+            }, 100);
+        }
+
+        function downloadQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) {
+                alert('⚠️ Primero genera el código QR');
+                return;
+            }
+
+            // Crear un canvas más grande con texto
+            const finalCanvas = document.createElement('canvas');
+            finalCanvas.width = 400;
+            finalCanvas.height = 480;
+            const ctx = finalCanvas.getContext('2d');
+
+            // Fondo blanco
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+
+            // Título
+            ctx.fillStyle = '#00A651';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Capacitación en Seguridad', 200, 40);
+
+            // QR Code
+            ctx.drawImage(canvas, 50, 80, 300, 300);
+
+            // Subtítulo
+            ctx.fillStyle = '#666';
+            ctx.font = '16px Arial';
+            ctx.fillText('Escanea para acceder', 200, 420);
+            ctx.fillText('Normas de Seguridad - Carrefour', 200, 450);
+
+            // Descargar
+            const link = document.createElement('a');
+            link.download = 'qr-capacitacion-seguridad.png';
+            link.href = finalCanvas.toDataURL();
+            link.click();
+        }
+
+        function printQR() {
+            const url = document.getElementById('url').value;
+            const printWindow = window.open('', '', 'width=800,height=600');
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Código QR - Capacitación</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            text-align: center;
+                            padding: 50px;
+                        }
+                        h1 {
+                            color: #00A651;
+                            margin-bottom: 20px;
+                        }
+                        .qr-container {
+                            margin: 30px auto;
+                            padding: 20px;
+                            border: 2px solid #00A651;
+                            display: inline-block;
+                            border-radius: 10px;
+                        }
+                        p {
+                            color: #666;
+                            margin-top: 20px;
+                        }
+                        @media print {
+                            button { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>🛡️ Capacitación en Seguridad</h1>
+                    <div class="qr-container">
+                        <div id="qrcode"></div>
+                    </div>
+                    <p><strong>Escanea el código QR para acceder a la capacitación</strong></p>
+                    <p>Normas Generales de Seguridad - Carrefour</p>
+                    <p style="font-size: 12px; color: #999; margin-top: 40px;">${url}</p>
+                    <button onclick="window.print()" style="margin-top: 20px; padding: 10px 20px; background: #00A651; color: white; border: none; border-radius: 5px; cursor: pointer;">🖨️ Imprimir</button>
+                </body>
+                </html>
+            `);
+
+            printWindow.document.close();
+
+            // Generar QR en la ventana de impresión
+            const script = printWindow.document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';
+            script.onload = () => {
+                new QRCode(printWindow.document.getElementById('qrcode'), {
+                    text: url,
+                    width: 300,
+                    height: 300,
+                    colorDark: '#000000',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            };
+            printWindow.document.head.appendChild(script);
+        }
+    </script>
+</body>
+</html>
