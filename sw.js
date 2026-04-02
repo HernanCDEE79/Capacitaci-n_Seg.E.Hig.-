@@ -1,4 +1,4 @@
-const CACHE_NAME = 'capacitacion-seguridad-v1';
+const CACHE_NAME = 'capacitacion-seguridad-v2';
 const urlsToCache = [
   '/',
   '/index.html',
