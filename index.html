@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacitación - Normas de Seguridad</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0047BA">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0047BA 0%, #003380 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #0047BA;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #0047BA;
+        }
+
+        .btn {
+            background: #0047BA;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #003380;
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .triptico-viewer {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .triptico-viewer img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .trivia-container {
+            margin: 20px 0;
+        }
+
+        .question-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0047BA;
+        }
+
+        .question-text {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .question-number {
+            color: #0047BA;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .answer-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .answer-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .answer-btn:hover {
+            border-color: #0047BA;
+            background: #e6f2ff;
+        }
+
+        .answer-btn.selected {
+            background: #0047BA;
+            color: white;
+            border-color: #0047BA;
+        }
+
+        .signature-pad {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        .signature-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .score-number {
+            font-size: 72px;
+            font-weight: bold;
+            color: #0047BA;
+            margin: 20px 0;
+        }
+
+        .score-number.fail {
+            color: #dc3545;
+        }
+
+        .score-text {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #0047BA;
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .download-btn {
+            background: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .download-btn:hover {
+            background: #0056b3;
+        }
+
+        .info-box {
+            background: #e6f2ff;
+            border-left: 4px solid #0047BA;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-box p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        @media (max-width: 600px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .answer-options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ CAPACITACIÓN EN SEGURIDAD E HIGIENE EN EL TRABAJO</h1>
+            <p>Normas Generales de Seguridad - Carrefour</p>
+        </div>
+
+        <!-- Sección 1: Registro -->
+        <div id="registro" class="section active">
+            <div class="content">
+                <h2 style="margin-bottom: 20px; color: #333;">Registro de Participante</h2>
+                <form id="registroForm">
+                    <div class="form-group">
+                        <label for="nombre">Nombre *</label>
+                        <input type="text" id="nombre" required placeholder="Ingrese su nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido *</label>
+                        <input type="text" id="apellido" required placeholder="Ingrese su apellido">
+                    </div>
+                    <div class="form-group">
+                        <label for="dni">DNI *</label>
+                        <input type="text" id="dni" required placeholder="Ingrese su DNI" pattern="[0-9]{7,8}">
+                    </div>
+                    <div class="form-group">
+                        <label for="empresa">Empresa *</label>
+                        <input type="text" id="empresa" required placeholder="Ingrese su empresa">
+                    </div>
+                    <button type="submit" class="btn">Continuar al Material de Estudio</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sección 2: Tríptico -->
+        <div id="triptico" class="section">
+            <div class="content">
+                <h2 style="margin-bottom: 20px; color: #333;">Material de Capacitación</h2>
+                
+                <div class="info-box">
+                    <p><strong>📖 Lea atentamente el siguiente material</strong></p>
+                    <p>Puede descargar el PDF para consultarlo luego o iniciar directamente la evaluación</p>
+                </div>
+
+                <button id="downloadBtn" class="btn download-btn">📥 Descargar Tríptico (PDF)</button>
+
+                <div class="triptico-viewer">
+                    <img src="page-1.jpg" alt="Tríptico Página 1">
+                    <img src="page-2.jpg" alt="Tríptico Página 2">
+                </div>
+
+                <button id="iniciarTrivia" class="btn">Iniciar Evaluación</button>
+            </div>
+        </div>
+
+        <!-- Sección 3: Trivia -->
+        <div id="trivia" class="section">
+            <div class="content">
+                <h2 style="margin-bottom: 20px; color: #333;">Evaluación de Conocimientos</h2>
+                
+                <div class="info-box">
+                    <p><strong>📝 Instrucciones:</strong></p>
+                    <p>• Responda las 15 preguntas de verdadero o falso</p>
+                    <p>• Necesita 11 respuestas correctas para aprobar (70%)</p>
+                </div>
+
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                </div>
+
+                <div id="triviaContainer" class="trivia-container"></div>
+
+                <button id="finalizarTrivia" class="btn" disabled>Finalizar Evaluación</button>
+            </div>
+        </div>
+
+        <!-- Sección 4: Resultado -->
+        <div id="resultado" class="section">
+            <div class="content">
+                <div class="score-display">
+                    <h2 style="color: #333;">Resultado de la Evaluación</h2>
+                    <div id="scoreNumber" class="score-number">0</div>
+                    <div id="scoreText" class="score-text">de 15 correctas</div>
+                    <div id="statusText" style="font-size: 20px; margin-bottom: 20px;"></div>
+                </div>
+
+                <div id="aproboSection" style="display: none;">
+                    <h3 style="margin-bottom: 20px; color: #333;">Firma de Conformidad</h3>
+                    <p style="margin-bottom: 15px; color: #666;">Por favor, firme para confirmar que ha completado la capacitación:</p>
+                    <canvas id="signaturePad" class="signature-pad" width="600" height="200"></canvas>
+                    <div class="signature-controls">
+                        <button id="clearSignature" class="btn btn-secondary">🗑️ Limpiar</button>
+                        <button id="submitSignature" class="btn">✅ Enviar Capacitación</button>
+                    </div>
+                </div>
+
+                <div id="reproboSection" style="display: none;">
+                    <button id="reintentar" class="btn">🔄 Volver a Intentar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección 5: Confirmación -->
+        <div id="confirmacion" class="section">
+            <div class="content">
+                <div style="text-align: center; padding: 40px 0;">
+                    <div style="font-size: 72px; margin-bottom: 20px;">✅</div>
+                    <h2 style="color: #0047BA; margin-bottom: 15px;">¡Capacitación Completada!</h2>
+                    <p style="font-size: 16px; color: #666; margin-bottom: 30px;">
+                        Su registro ha sido enviado exitosamente
+                    </p>
+                    <button class="btn" onclick="location.reload()">🔄 Nueva Capacitación</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker registrado'))
+                .catch(err => console.log('Error al registrar SW:', err));
+        }
+    </script>
+</body>
+</html>
